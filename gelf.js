@@ -131,8 +131,7 @@ Gelf.prototype.processMessage = function(buffer, callback) {
 
 Gelf.prototype.processMultipleChunks = function(buffer, chunkSize, callback) {
   var self = this,
-      chunkArray,
-      datagrams;
+      chunkArray;
 
   chunkArray = self.prepareMultipleChunks(buffer, chunkSize);
 
