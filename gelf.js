@@ -4,6 +4,7 @@ const deflate = require('zlib').deflate
 const dgram = require('dgram')
 const EventEmitter = require('events')
 const os = require('os')
+const crypto = require('crypto')
 const async = require('async')
 
 const defaults = {
@@ -128,9 +129,7 @@ class Gelf extends EventEmitter {
     const res = []
     const count = chunks.length
 
-    const msgId = Math.floor(
-      Math.random() * (99999999 - 10000000)
-    ) + 10000000
+    const msgId = Array.prototype.slice.call(crypto.randomBytes(8))
 
     chunks.forEach((chunk, index) => {
       res[index] = Buffer.from(
