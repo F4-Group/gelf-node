@@ -90,6 +90,17 @@ describe('Gelf', () => {
     const res = gelf.maybeChunkMessage(buf)
 
     assert.ok(Array.isArray(res))
+    const firstChunk = res[0]
+    const messageId = firstChunk.slice(2, 10).toString('hex')
+    const totalChunks = firstChunk.readUInt8(11)
+
+    res.forEach((chunk, i) => {
+      assert.equal(chunk.readUInt8(0), 0x1e)
+      assert.equal(chunk.readUInt8(1), 0x0f)
+      assert.equal(chunk.slice(2, 10).toString('hex'), messageId)
+      assert.equal(chunk.readUInt8(10), i)
+      assert.equal(chunk.readUInt8(11), totalChunks)
+    })
     gelf.closeSocket()
   })
 
